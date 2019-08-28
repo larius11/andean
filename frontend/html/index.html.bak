@@ -1,0 +1,47 @@
+<html>
+	<head>
+		<title>Simplect</title>
+		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<meta name="viewport" content="width=device-width, initial-scale: 1.0, user-scalabe=0" />
+		<script src="js/jquery-3.1.1.min.js"></script>
+		<script src="js/general.js"></script>
+	</head>
+	<body>
+
+		<div id="header"> 
+			<div class="logo"><a href="#">Simplect</a></div>
+		</div>
+
+		<a class="mobile" href="#">
+			<img src="test.svg" style="height: 15px;"/>
+		</a>
+
+		<div id="container">
+			<div class="sidebar">
+				<ul id="nav">
+					<li><a class="selected" href="index.html"> Projects</a></li>
+					<li><a href="about.html"> About </a></li>
+					<li><a href="quote.html"> Get Quote </a></li>
+				</ul>
+			</div>
+			<div class="content">
+				<h1 class="title">Projects</h1>
+				<br>
+				<div id="box">
+					<div class="box-top">
+						LeadWiz <a href="https://play.google.com/store/apps/details?id=lead.retrieval.jcgc.igneous">Android</a> <a href="https://itunes.apple.com/us/app/leadwiz/id1462129570?mt=8">Apple</a>
+					</div>
+					<div class="box-panel">
+						Application built for <a href="https://www.regexpo.com/">Looking Cube</a>, a company based in Houston, TX. This software handles Lead information by scanning QRCodes and organizing the data for efficient processing. It is available both on iPhone devices as well as Android.
+						<div style="min-width: 100%">
+							<img src="images/LCLogo.png" style="display: block; margin-left: auto; margin-right: auto;">
+						</div>
+					</div>
+				</div>
+				<br>
+				<div class="footer">Copyright Ricardo Riveron, 2019</div>
+			</div>
+		</div>
+
+	</body>
+</html>
