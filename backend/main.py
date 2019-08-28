@@ -10,7 +10,7 @@ def api_endpoints():
     return "You've made a GET request... We only handle POST with correct data..."
 
 
-@app.route('/insert', method=['POST'])
+@app.route('/insert', methods=['POST'])
 def insert_product():
     return request.json
 
