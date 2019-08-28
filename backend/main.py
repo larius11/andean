@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -8,6 +8,11 @@ CORS(app)
 @app.route('/api', methods=['GET', 'POST'])
 def api_endpoints():
     return "You've made a GET request... We only handle POST with correct data..."
+
+
+@app.route('/insert', method=['POST'])
+def insert_product():
+    return request.json
 
 
 if __name__ == "__main__":
