@@ -28,6 +28,7 @@ export const NavigationBar = () => (
                 <Nav className="m1-auto">
                 <Nav.Item> <Nav.Link href="/">Home</Nav.Link></Nav.Item>
                 <Nav.Item> <Nav.Link href="/SearchForm">Search</Nav.Link></Nav.Item>
+                <Nav.Item> <Nav.Link href="/Test">Test</Nav.Link></Nav.Item>
                 </Nav>
          </Navbar>
     </Styles>
