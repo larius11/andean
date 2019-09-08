@@ -5,7 +5,7 @@ app = Flask(__name__)
 CORS(app)
 
 
-@app.route('/api', methods=['GET', 'POST'])
+@app.route('/api', methods=['GET'])
 def api_endpoints():
     return "You've made a GET request... We only handle POST with correct data..."
 
