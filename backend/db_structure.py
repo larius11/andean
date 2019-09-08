@@ -18,7 +18,7 @@ class Product(db.Model):
     def __repr__(self):
         categoryToSub = db.session.query(Category.name, Category.sub_category).filter_by(id=self.category).first()
         subCategory = db.session.query(SubCategory.name).filter_by(id=categoryToSub[1]).first()
-        return 'Name: %r, Category: %r, SubCategory: %r, Color: %r, Price: %.2f, Details: %r' %\
+        return 'Name: %r, Category: %r, SubCategory: %r, Color: %r, Price: %.2f, Details: %r\n' %\
                (self.name, categoryToSub[0], subCategory[0], self.color, self.price, self.details)
 
 

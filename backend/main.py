@@ -1,7 +1,8 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
+from backend.db_funcs import *
+from backend.db_structure import app
 
-app = Flask(__name__)
 CORS(app)
 
 
@@ -11,8 +12,14 @@ def api_endpoints():
 
 
 @app.route('/insert', methods=['POST'])
-def insert_product():
-    return request.json
+def insert_product_api():
+    fields = request.json
+    response = insert_product(fields['category'], fields['subCategory'], fields['color'], fields['name'], fields['price'], fields['details'])
+    if response[0]:
+        print(get_all_products())
+    else:
+        print(response)
+    return jsonify(request.json)
 
 
 if __name__ == "__main__":

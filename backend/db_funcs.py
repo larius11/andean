@@ -3,6 +3,7 @@ from backend.db_structure import db, SubCategory, Category, Product
 
 def insert_product(category: str, subCategory: str, color: str,
                    name: str, price: float, details: str) -> (bool, str):
+    print("Beginning to insert...")
     # Search for subCategory
     fk_sub_cat = db.session.query(SubCategory.id).filter_by(name=subCategory).first()
     if fk_sub_cat is None:
@@ -20,3 +21,7 @@ def insert_product(category: str, subCategory: str, color: str,
     db.session.add(Product(category=fk_cat[0], color=color, name=name, price=price, details=details))
     db.session.commit()
     return True, "Inserted a new Product."
+
+
+def get_all_products() -> str:
+    return Product.query.all()
