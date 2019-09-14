@@ -25,7 +25,7 @@ def insert_product_api():
 @app.route('/product', methods=['GET'])
 def get_product():
     fields = request.json
-    return jsonify('{' + get_specific_product(fields['product'], fields['category'], fields['subCategory'], fields['color']) + '}')
+    return jsonify(get_specific_product(fields['product'], fields['category'], fields['subCategory'], fields['color']).__dict__ )
 
 
 @app.route('/products', methods=['GET'])
