@@ -23,5 +23,5 @@ def insert_product(category, subCategory, color,
     return True, "Inserted a new Product."
 
 
-def get_all_products() -> str:
+def get_all_products():
     return Product.query.all()
