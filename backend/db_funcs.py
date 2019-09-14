@@ -1,8 +1,8 @@
-from backend.db_structure import db, SubCategory, Category, Product
+from db_structure import db, SubCategory, Category, Product
 
 
-def insert_product(category: str, subCategory: str, color: str,
-                   name: str, price: float, details: str, image: str) -> (bool, str):
+def insert_product(category, subCategory, color,
+                   name, price: float, details, image):
     print("Beginning to insert...")
     # Search for subCategory
     fk_sub_cat = db.session.query(SubCategory.id).filter_by(name=subCategory).first()

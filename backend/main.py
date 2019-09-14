@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from backend.db_funcs import *
-from backend.db_structure import app
+from db_funcs import *
+from db_structure import app
 
 CORS(app)
 
