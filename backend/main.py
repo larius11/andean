@@ -22,6 +22,16 @@ def insert_product_api():
     return jsonify(request.json)
 
 
+@app.route('/categories', methods=['GET'])
+def get_categories():
+    return jsonify(get_all_categories())
+
+
+@app.route('/subCategories', methods=['GET'])
+def get_sub_categories():
+    return jsonify(get_all_sub_categories())
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
 
