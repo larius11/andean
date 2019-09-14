@@ -22,6 +22,24 @@ def insert_product_api():
     return jsonify(request.json)
 
 
+@app.route('/product', methods=['GET'])
+def get_product():
+    fields = request.json
+    return jsonify(get_specific_product(fields['product'], fields['category'], fields['subCategory'], fields['color']))
+
+
+@app.route('/products', methods=['GET'])
+def get_products():
+    fields = request.json
+    return jsonify(get_some_products(fields['category'], fields['subCategory']))
+
+
+@app.route('/colors', methods=['GET'])
+def get_colors():
+    fields = request.json
+    return jsonify(get_some_colors(fields['product'], fields['category'], fields['subCategory']))
+
+
 @app.route('/categories', methods=['GET'])
 def get_categories():
     return jsonify(get_all_categories())
