@@ -26,7 +26,7 @@ def insert_product(category, subCategory, color,
 def get_specific_product(product, category, subCategory, color):
     selectedSubCategory = SubCategory.query.with_entities(SubCategory.id).filter(SubCategory.name == subCategory).first()[0]
     selectedCategory = Category.query.with_entities(Category.id).filter(Category.name == category, Category.sub_category == selectedSubCategory).first()[0]
-    return Product.query.filter(Product.category == selectedCategory, Product.name == product, Product.color == color).first()
+    return Product.query.with_entities(Product.details, Product.price, Product.image).filter(Product.category == selectedCategory, Product.name == product, Product.color == color).first()
 
 
 def get_all_categories():
