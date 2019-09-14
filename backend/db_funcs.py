@@ -23,5 +23,13 @@ def insert_product(category, subCategory, color,
     return True, "Inserted a new Product."
 
 
+def get_all_categories():
+    return db.session.query(Category.name).all()
+
+
+def get_all_sub_categories():
+    return db.session.query(SubCategory.name).all()
+
+
 def get_all_products():
     return Product.query.all()
