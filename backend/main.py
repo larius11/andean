@@ -14,7 +14,7 @@ def api_endpoints():
 @app.route('/insert', methods=['POST'])
 def insert_product_api():
     fields = request.json
-    response = insert_product(fields['category'], fields['subCategory'], fields['color'], fields['name'], fields['price'], fields['details'])
+    response = insert_product(fields['category'], fields['subCategory'], fields['color'], fields['name'], fields['price'], fields['details'], fields['image'])
     if response[0]:
         print(get_all_products())
     else:

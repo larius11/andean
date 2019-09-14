@@ -14,6 +14,7 @@ class Product(db.Model):
     name = db.Column(db.String(80), unique=False, nullable=True)
     price = db.Column(db.Float, unique=False, nullable=True)
     details = db.Column(db.String(160), unique=False, nullable=True)
+    image = db.Column(db.String(160), unique=False, nullable=True)
 
     def __repr__(self):
         categoryToSub = db.session.query(Category.name, Category.sub_category).filter_by(id=self.category).first()
