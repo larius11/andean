@@ -30,7 +30,7 @@ class DataForm extends React.Component {
         subCategory: '',
         details: '',
         color: '',
-        images: [],
+        images: '',
         formData: {},
         file: null
 
@@ -45,7 +45,7 @@ class DataForm extends React.Component {
             subCategory: '',
             details: '',
             color: '',
-            images: [],
+            images: '',
             file: null
         };
 
@@ -64,7 +64,7 @@ class DataForm extends React.Component {
             "category": this.state.category,
             "subCategory": this.state.subCategory,
             "color": this.state.color,
-            "images": this.state.images,
+            "image": this.state.images,
             "price": this.state.price,
             "details": this.state.details
         }
@@ -76,10 +76,7 @@ class DataForm extends React.Component {
         console.log("Sending this data: ", this.state.formData)
         const response = await axios.post(
             'http://18.191.199.125:5000/insert',
-            {
-                title: "dataEntry",
-                data: this.state.formData
-            },
+            this.state.formData,
             { headers: { 'Content-Type': 'application/json' } }
 
         )
@@ -120,7 +117,6 @@ class DataForm extends React.Component {
             })
         }
     }
-    
 
     render() {
         return (
@@ -168,20 +164,12 @@ class DataForm extends React.Component {
                         <Col>
                             <Form.Label>Image</Form.Label>
                             <Form.Row>
-                                <div>
-                                    <input required={true} type="file" name="file" onChange={(e) => this.onImageChange(e)}></input>
-                                    <section>
-                                        <div id="fileDrag">
-                                            {/* <p>Drag 'n' drop some files here, or click to select files</p> */}
-                                            <img src={this.state.file} alt="" width="250" height="250" max-width="100%" max-height="100%"></img>
-                                        </div>
-                                    </section>
-                                </div>
+                                <Form.Control required={true} name="images" placeholder="Image Link" type="text" value={this.state.images} onChange={this.handleChange.bind(this)} />
                             </Form.Row>
                         </Col>
                     </Form.Row>
                     <p></p>
-                    <Button variant="primary" type="submit" onSubmit={this.onSubmit}>
+                    <Button variant="primary" type="button" onClick={this.onSubmit}>
                         Submit
                 </Button>
                 </Form>
@@ -192,3 +180,13 @@ class DataForm extends React.Component {
 }
 
 export default DataForm
+
+{/* <div>
+<input required={true} type="file" name="file" onChange={(e) => this.onImageChange(e)}></input>
+<section>
+    <div id="fileDrag">
+        {/* <p>Drag 'n' drop some files here, or click to select files</p> */}
+//        <img src={this.state.file} alt="" width="250" height="250" max-width="100%" max-height="100%"></img>
+//    </div>
+//</section>
+//</div> */}
