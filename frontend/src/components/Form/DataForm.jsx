@@ -30,7 +30,7 @@ class DataForm extends React.Component {
         subCategory: '',
         details: '',
         color: '',
-        images: [],
+        images: '',
         formData: {},
         file: null
 
@@ -45,7 +45,7 @@ class DataForm extends React.Component {
             subCategory: '',
             details: '',
             color: '',
-            images: [],
+            images: '',
             file: null
         };
 
@@ -120,7 +120,6 @@ class DataForm extends React.Component {
             })
         }
     }
-    
 
     render() {
         return (
@@ -168,15 +167,7 @@ class DataForm extends React.Component {
                         <Col>
                             <Form.Label>Image</Form.Label>
                             <Form.Row>
-                                <div>
-                                    <input required={true} type="file" name="file" onChange={(e) => this.onImageChange(e)}></input>
-                                    <section>
-                                        <div id="fileDrag">
-                                            {/* <p>Drag 'n' drop some files here, or click to select files</p> */}
-                                            <img src={this.state.file} alt="" width="250" height="250" max-width="100%" max-height="100%"></img>
-                                        </div>
-                                    </section>
-                                </div>
+                                <Form.Control required={true} name="images" placeholder="Image Link" type="text" value={this.state.images} onChange={this.handleChange.bind(this)} />
                             </Form.Row>
                         </Col>
                     </Form.Row>
@@ -192,3 +183,13 @@ class DataForm extends React.Component {
 }
 
 export default DataForm
+
+{/* <div>
+<input required={true} type="file" name="file" onChange={(e) => this.onImageChange(e)}></input>
+<section>
+    <div id="fileDrag">
+        {/* <p>Drag 'n' drop some files here, or click to select files</p> */}
+//        <img src={this.state.file} alt="" width="250" height="250" max-width="100%" max-height="100%"></img>
+//    </div>
+//</section>
+//</div> */}
