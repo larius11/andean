@@ -64,7 +64,7 @@ class DataForm extends React.Component {
             "category": this.state.category,
             "subCategory": this.state.subCategory,
             "color": this.state.color,
-            "images": this.state.images,
+            "image": this.state.images,
             "price": this.state.price,
             "details": this.state.details
         }
@@ -76,10 +76,7 @@ class DataForm extends React.Component {
         console.log("Sending this data: ", this.state.formData)
         const response = await axios.post(
             'http://18.191.199.125:5000/insert',
-            {
-                title: "dataEntry",
-                data: this.state.formData
-            },
+            this.state.formData,
             { headers: { 'Content-Type': 'application/json' } }
 
         )
@@ -172,7 +169,7 @@ class DataForm extends React.Component {
                         </Col>
                     </Form.Row>
                     <p></p>
-                    <Button variant="primary" type="submit" onSubmit={this.onSubmit}>
+                    <Button variant="primary" type="button" onClick={this.onSubmit}>
                         Submit
                 </Button>
                 </Form>
