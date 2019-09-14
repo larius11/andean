@@ -101,14 +101,14 @@ class SearchForm extends React.Component {
                                         Product Name
                                     </Form.Label>
                                     <Card type="text">
-                                        <Card.Body>Product Details.</Card.Body>
+                                        <Card.Body>Product Details</Card.Body>
                                     </Card>
                                     <p></p>
                                     <Form.Label>
                                         Price
                                     </Form.Label>
                                     <Card type="text">
-                                        <Card.Body>Price.</Card.Body>
+                                        <Card.Body>Price</Card.Body>
                                     </Card>
                                 </Col>
                             </Form.Row>
