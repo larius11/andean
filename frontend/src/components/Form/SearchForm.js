@@ -66,6 +66,7 @@ class SearchForm extends React.Component {
             finalProduct: 'Product',
             found: false
         };
+        this.handleSelection = this.handleSelection.bind(this)
     }
 
     handleButtonClick = (event) => {
@@ -161,6 +162,11 @@ class SearchForm extends React.Component {
         else{
             return true
         }
+    }
+
+    handleSelection = (event) => {
+
+        console.log("Selection: ", event.target)
     }
 
     componentDidMount() {
