@@ -30,7 +30,10 @@ class SearchForm extends React.Component {
         image: '',
         categoryList: [],
         subCategoryList: [],
-        colorList: []
+        colorList: [],
+        product: [],
+        categorySelected: 'Category',
+        subCategorySelected: 'Sub-Category'
     };
 
     constructor(props) {
@@ -46,8 +49,12 @@ class SearchForm extends React.Component {
             image: '',
             categoryList: [],
             subCategoryList: [],
-            colorList: []
+            colorList: [],
+            product: [],
+            categorySelected: 'Category',
+            subCategorySelected: 'Sub-Category'
         };
+        this.handleSelection = this.handleSelection.bind(this)
     }
 
     handleButtonClick = (event) => {
@@ -57,6 +64,11 @@ class SearchForm extends React.Component {
             }
         });
         this.createDropdowns(event.target.innerText)
+    }
+
+    handleSelection = (event) => {
+
+        console.log("Selection: ", event.target)
     }
 
     componentDidMount() {
@@ -86,28 +98,52 @@ class SearchForm extends React.Component {
                 subCategory: formInfo
             });
         }
-
+        else if (title == "product") {
+            this.setState({
+                product: formInfo
+            });
+        }
     }
 
     createDropdowns(title) {
         console.log("State:", this.state)
-            console.log("Title:", title)
-            if (title == "Category") {
-                var testData = this.state.category
-                console.log("testData for Category: ", testData)
-                this.state.categoryList = testData.map(function (name) {
-                    return <Dropdown.Item key={name}>{name}</Dropdown.Item>
-                })
-                return
-            }
-            else if (title == "Sub-Category") {
-                var testData = this.state.subCategory
-                console.log("testData for subCategory: ", testData)
-                this.state.subCategoryList = testData.map(function (name) {
-                    return <Dropdown.Item key={name}>{name}</Dropdown.Item>
-                })
-                return
-            }
+        console.log("Title:", title)
+        if (title == "Category") {
+            var testData = this.state.category
+            console.log("testData for Category: ", testData)
+            this.state.categoryList = testData.map(function (name) {
+                return <Dropdown.Item key={name}>{name}</Dropdown.Item>
+            })
+            return
+        }
+        else if (title == "Sub-Category") {
+            var testData = this.state.subCategory
+            console.log("testData for subCategory: ", testData)
+            this.state.subCategoryList = testData.map(function (name) {
+                return <Dropdown.Item key={name}>{name}</Dropdown.Item>
+            })
+            return
+        }
+        else if (title == "Product") {
+            var testData = this.state.product
+            console.log("testData for Product: ", testData)
+            this.state.subCategoryList = testData.map(function (name) {
+                return <Dropdown.Item onClick={this.handleSelection} key={name}>{name}</Dropdown.Item>
+            })
+            return
+        }
+        else {
+            this.handleDropDownSelection(title)
+        }
+    }
+
+    handleDropDownSelection(title) {
+        if (this.state.categoryList.some(item => this.state.categoryList.name === item.name)) {
+            console.log("Category exists ", title)
+            this.setState({
+                categorySelected: title
+            })
+        }
     }
 
     render() {
@@ -118,39 +154,52 @@ class SearchForm extends React.Component {
                         <Form.Row>
                             <Form.Label>
                                 Search
-                    </Form.Label>
+                             </Form.Label>
                         </Form.Row>
-
                         <Form.Row>
                             <ButtonToolbar>
-                                <DropdownButton required={true} onClick={this.handleButtonClick.bind(this)} title="Category" size="lg" variant="primary" id="dropdown-basic" name="category">
-                                    {this.state.categoryList}
-                                </DropdownButton>
-
-                                <DropdownButton onClick={this.handleButtonClick.bind(this)} title="Sub-Category" size="lg" variant="secondary" id="dropdown-basic">
-                                    {this.state.subCategoryList}
-                                </DropdownButton>
-
-                                <DropdownButton title="Product" size="lg" variant="info" id="dropdown-basic">
-                                    <Dropdown.Item eventKey="1">Action</Dropdown.Item>
-                                    <Dropdown.Item eventKey="2">Another action</Dropdown.Item>
-                                    <Dropdown.Item eventKey="3">
-                                        Active Item
-                            </Dropdown.Item>
-                                    <Dropdown.Divider />
-                                    <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>
-                                </DropdownButton>
-
-                                <DropdownButton title="Color" size="lg" variant="primary" id="dropdown-basic">
-                                    <Dropdown.Item eventKey="1">Action</Dropdown.Item>
-                                    <Dropdown.Item eventKey="2">Another action</Dropdown.Item>
-                                    <Dropdown.Item eventKey="3">
-                                        Active Item
-                            </Dropdown.Item>
-                                    <Dropdown.Divider />
-                                    <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>
-                                </DropdownButton>
-
+                                <Form.Row>
+                                    <Col>
+                                        <Form.Row>
+                                            <Form.Label>
+                                                Categories
+                                            </Form.Label>
+                                        </Form.Row>
+                                        <DropdownButton required={true} onClick={this.handleButtonClick.bind(this)} title={this.state.categorySelected} size="lg" variant="primary" id="dropdown-basic" name="category">
+                                            {this.state.categoryList}
+                                        </DropdownButton>
+                                    </Col>
+                                    <Col>
+                                        <Form.Row>
+                                            <Form.Label>
+                                                Subcategories
+                                            </Form.Label>
+                                        </Form.Row>
+                                        <DropdownButton onClick={this.handleButtonClick.bind(this)} value={this.state.subCategorySelected} title="Sub-Category" size="lg" variant="secondary" id="dropdown-basic">
+                                            {this.state.subCategoryList}
+                                        </DropdownButton>
+                                    </Col>
+                                    <Col>
+                                        <Form.Row>
+                                            <Form.Label>
+                                                Products
+                                            </Form.Label>
+                                        </Form.Row>
+                                            <DropdownButton onClick={this.handleButtonClick.bind(this)} title="Product" size="lg" variant="info" id="dropdown-basic">
+                                                {this.state.product}
+                                            </DropdownButton>
+                                    </Col>
+                                    <Col>
+                                        <Form.Row>
+                                            <Form.Label>
+                                                Products
+                                            </Form.Label>
+                                        </Form.Row>
+                                            <DropdownButton title="Color" size="lg" variant="primary" id="dropdown-basic">
+                                                {/* This is where I dynamically create the list for products */}
+                                            </DropdownButton>
+                                    </Col>
+                                </Form.Row>
                             </ButtonToolbar>
                         </Form.Row>
                         <p></p>
@@ -182,7 +231,7 @@ class SearchForm extends React.Component {
                         <p></p>
                         <Button variant="primary" type="button" onClick={this.onSubmit}>
                             Purchase
-                </Button>
+                        </Button>
                     </Form>
                 </Styles>
             </div>
