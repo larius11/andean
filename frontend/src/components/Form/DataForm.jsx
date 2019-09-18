@@ -4,8 +4,6 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import styled from 'styled-components';
 import axios from 'axios'
-import DragAndDrop from './DragAndDrop'
-import Dropzone from "react-dropzone";
 
 const Styles = styled.div`
     .form-label{
