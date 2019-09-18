@@ -66,7 +66,6 @@ class SearchForm extends React.Component {
             finalProduct: 'Product',
             found: false
         };
-        this.handleSelection = this.handleSelection.bind(this)
     }
 
     handleButtonClick = (event) => {
@@ -75,7 +74,7 @@ class SearchForm extends React.Component {
             console.log("getInitialData for products")
             this.getInitialData("products").then((response) => {
                 console.log("Response: ", response)
-                const uniqueSet = new []()
+                const uniqueSet = new Array()
                 response.forEach(element => {
                     if (!uniqueSet.includes(element[0])) {
                         uniqueSet.push(element[0])
@@ -98,7 +97,7 @@ class SearchForm extends React.Component {
             console.log("getInitialData for Color")
             this.getInitialData("colors").then((response) => {
                 console.log("Response: ", response)
-                const uniqueSet = new []()
+                const uniqueSet = new Array()
                 response.forEach(element => {
                     if (!uniqueSet.includes(element[0])) {
                         uniqueSet.push(element[0])
@@ -162,11 +161,6 @@ class SearchForm extends React.Component {
         else{
             return true
         }
-    }
-
-    handleSelection = (event) => {
-
-        console.log("Selection: ", event.target)
     }
 
     componentDidMount() {
@@ -238,7 +232,7 @@ class SearchForm extends React.Component {
             });
         }
         else if (title === "products") {
-            const uniqueSet = new []()
+            const uniqueSet = new Array()
             formInfo.forEach(element => {
                 if (!uniqueSet.includes(element[0])) {
                     uniqueSet.push(element[0])
@@ -280,7 +274,7 @@ class SearchForm extends React.Component {
             var testData = this.state.product
             console.log("testData: ", testData)
             this.state.productList = testData.map(function (name) {
-                return <Dropdown.Item key={name}>{name}</Dropdown.Item>
+                return <Dropdown.Item key={name} value={name}>{name}</Dropdown.Item>
             })
             return
         }
