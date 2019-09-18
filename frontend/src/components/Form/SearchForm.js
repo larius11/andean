@@ -94,14 +94,15 @@ class SearchForm extends React.Component {
     async getDataAxios(title) {
         if (title == "products") {
             console.log("Request Title: ", title)
+            var data = {
+                category: [this.state.categorySelected],
+                subCategory: [this.state.subCategorySelected]
+            }
+            console.log("Product JSON Data: ", data)
             const response =
                 await axios.get("http://18.191.199.125:5000/" + title,
-                    {
-                        params: {
-                            category: this.state.categorySelected.toString(),
-                            subCategory: this.state.subCategorySelected.toString()
-                        }
-                    }
+                JSON.stringify(data),
+                // { headers: {'Content-Type': 'application/json'}}
                 )
             console.log("Response for products: ", response.data)
             return response.data
