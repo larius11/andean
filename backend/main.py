@@ -32,7 +32,8 @@ def get_product():
 def get_products():
     fields = request.json
     print(fields)
-    return jsonify(get_some_products(fields['category'], fields['subCategory']))
+    response = get_some_products(fields['category'], fields['subCategory'])
+    return jsonify(response)
 
 
 @app.route('/colors', methods=['POST'])
