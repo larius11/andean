@@ -35,12 +35,16 @@ class SearchForm extends React.Component {
         image: '',
         categoryList: [],
         subCategoryList: [],
+        productList: [],
         colorList: [],
         product: [],
         categorySelected: 'Category',
         subCategorySelected: 'Sub-Category',
+        productSelected: 'Product',
         selectionName: '',
-        disabledValue: []
+        disabledValue: [],
+        finalProduct: '',
+        found: false
     };
 
     constructor(props) {
@@ -60,30 +64,113 @@ class SearchForm extends React.Component {
             product: [],
             categorySelected: 'Category',
             subCategorySelected: 'Sub-Category',
+            productSelected: 'Product',
+            colorSelected: 'Color',
             selectionName: '',
-            disabledValue: [false, true, true, true]
+            disabledValue: [false, true, true, true],
+            finalProduct: 'Product',
+            found: false
         };
         //this.handleSelection = this.handleSelection.bind(this)
     }
 
     handleButtonClick = (event) => {
-        this.setState(state => {
-            return {
-                isOpen: !state.isOpen
-            }
-        });
-        this.createDropdowns(event.target.innerText)
-
-        if (event.target.innerText == "Product" && this.state.categorySelected != "Category" && this.state.subCategorySelected != "Sub-Category") {
+        var innerText = event.target.innerText
+        if (event.target.innerText == "Product") {
             console.log("getInitialData for products")
-            this.getInitialData("products")
+            this.getInitialData("products").then((response) => {
+                console.log("Response: ", response)
+                const uniqueSet = new Array()
+                response.forEach(element => {
+                    if (!uniqueSet.includes(element[0])) {
+                        uniqueSet.push(element[0])
+                    }
+                });
+                console.log("uniqueSet: ", uniqueSet)
+                this.setState({
+                    product: uniqueSet
+                });
+                console.log("Products in state: ", this.state.product)
+                this.setState(state => {
+                    this.createDropdowns(innerText)
+                    return {
+                        isOpen: !state.isOpen
+                    }
+
+                });
+
+            })
+        }
+        else if (event.target.innerText == "Color") {
+            console.log("getInitialData for Color")
+            this.getInitialData("colors").then((response) => {
+                console.log("Response: ", response)
+                const uniqueSet = new Array()
+                response.forEach(element => {
+                    if (!uniqueSet.includes(element[0])) {
+                        uniqueSet.push(element[0])
+                    }
+                });
+                console.log("uniqueSet: ", uniqueSet)
+                this.setState({
+                    color: uniqueSet
+                });
+                console.log("Colors in state: ", this.state.color)
+                this.setState(state => {
+                    this.createDropdowns(innerText)
+                    return {
+                        isOpen: !state.isOpen
+                    }
+                });
+            })
+        }
+        else {
+            console.log("Handling Regularly")
+            this.setState(state => {
+                return {
+                    isOpen: !state.isOpen
+                }
+            });
+            this.createDropdowns(event.target.innerText)
+        }
+    }
+    componentWillUpdate() {
+        console.log("in componentWillUpdate and color is: ", this.state.color)
+        if (this.state.categorySelected !== "Category" && this.state.subCategorySelected !== "Sub-Category" && this.state.subCategorySelected == "Product") {
+            console.log("Component will NOT update")
+            //this.state.testState = 'testState'
+            return false
+        }
+        else if (this.state.colorSelected !== "Color"){
+            return true
+        }
+        else {
+            console.log("Component will update")
+            return true
         }
     }
 
-    // handleSelection = (event) => {
-
-    //     console.log("Selection: ", event.target)
-    // }
+    componentDidUpdate(){
+        console.log("Inside componentDidUpdate and this.state.found= ", this.state.found)
+        if (this.state.colorSelected !== "Color" && this.state.categorySelected !== "Category" && this.state.subCategorySelected !== "Sub-Category" && this.state.productSelected != "Product" && this.state.found == false){
+            console.log("Inside componentDidUpdate and getting final product")
+            this.getInitialData("product").then((response) => {
+                console.log("Response: ", response)
+                const product = response
+                console.log("Product Data: ", product)
+                this.setState({
+                    finalProduct: product[0],
+                    price: product[1],
+                    image: product[2],
+                    found: true
+                })
+                return true
+            })
+        }
+        else{
+            return true
+        }
+    }
 
     componentDidMount() {
         console.log("Component Did Mount")
@@ -95,21 +182,47 @@ class SearchForm extends React.Component {
         if (title == "products") {
             console.log("Request Title: ", title)
             var data = {
-                category: [this.state.categorySelected],
-                subCategory: [this.state.subCategorySelected]
+                "category": this.state.categorySelected,
+                "subCategory": this.state.subCategorySelected
             }
-            console.log("Product JSON Data: ", data)
             const response =
-                await axios.get("http://18.191.199.125:5000/" + title,
-                JSON.stringify(data),
-                // { headers: {'Content-Type': 'application/json'}}
+                await axios.post("http://18.191.199.125:5000/" + title,
+                    data,
+                    { headers: { 'Content-Type': 'application/json' } }
                 )
-            console.log("Response for products: ", response.data)
+            return response.data
+        }
+        else if (title == "colors") {
+            console.log("Request Title: ", title)
+            var data = {
+                "category": this.state.categorySelected,
+                "subCategory": this.state.subCategorySelected,
+                "product": this.state.productSelected
+            }
+            const response =
+                await axios.post("http://18.191.199.125:5000/" + title,
+                    data,
+                    { headers: { 'Content-Type': 'application/json' } }
+                )
+            return response.data
+        }
+        else if (title == "product") {
+            var data = {
+                "category": this.state.categorySelected,
+                "subCategory": this.state.subCategorySelected,
+                "product": this.state.productSelected,
+                "color": this.state.colorSelected
+            }
+            const response =
+                await axios.post("http://18.191.199.125:5000/" + title,
+                    data,
+                    { headers: { 'Content-Type': 'application/json' } }
+                )
             return response.data
         }
         else {
             const response =
-                await axios.get("http://18.191.199.125:5000/" + title)
+                await axios.post("http://18.191.199.125:5000/" + title)
             console.log("Response: ", response.data)
             return response.data
         }
@@ -117,7 +230,6 @@ class SearchForm extends React.Component {
 
     async getInitialData(title) {
         var formInfo = await this.getDataAxios(title)
-        console.log("formInfo: ", formInfo)
         if (title == "categories") {
             this.setState({
                 category: formInfo
@@ -127,21 +239,29 @@ class SearchForm extends React.Component {
             this.setState({
                 subCategory: formInfo
             });
-            this.setState({
-                subCategory: formInfo
-            })
         }
         else if (title == "products") {
-            this.setState({
-                product: formInfo
+            const uniqueSet = new Array()
+            formInfo.forEach(element => {
+                if (!uniqueSet.includes(element[0])) {
+                    uniqueSet.push(element[0])
+                }
             });
-            console.log("Products: ", this.state.product)
+            console.log("uniqueSet: ", uniqueSet)
+            this.setState({
+                product: uniqueSet
+            });
+            console.log("Products in state: ", this.state.product)
         }
         else if (title === "colors") {
             this.setState({
                 color: formInfo
             })
         }
+        else if (title === "product"){
+            return formInfo
+        }
+        return formInfo
     }
 
     createDropdowns(title) {
@@ -161,15 +281,35 @@ class SearchForm extends React.Component {
         }
         else if (title == "Product") {
             var testData = this.state.product
-            this.state.product = testData.map(function (name) {
-                return <Dropdown.Item href={name} ref={name} onClick={this.handleSelection} key={name}>{name}</Dropdown.Item>
-
+            console.log("testData: ", testData)
+            this.state.productList = testData.map(function (name) {
+                return <Dropdown.Item key={name}>{name}</Dropdown.Item>
+            })
+            return
+        }
+        else if (title == "Color") {
+            var testData = this.state.color
+            console.log("testData: ", testData)
+            this.state.colorList = testData.map(function (name) {
+                return <Dropdown.Item key={name}>{name}</Dropdown.Item>
+            })
+            return
+        }
+        else if (title == "Color" && this.state.colorSelected !== "Color") {
+            var testData = this.state.color
+            console.log("testData: ", testData)
+            this.state.colorList = testData.map(function (name) {
+                return <Dropdown.Item onSelect={console.log("Selected Color")} key={name}>{name}</Dropdown.Item>
             })
             return
         }
         else {
             this.handleDropDownSelection(title)
         }
+    }
+
+    handleSelect(e){
+        console.log("Selected: ", e.target)
     }
 
     handleDropDownSelection(title) {
@@ -192,6 +332,38 @@ class SearchForm extends React.Component {
                 subCategorySelected: title
             })
         }
+        else if (this.state.product.toString().includes(title)) {
+            console.log("Product exists ", title)
+            this.setState({
+                disabledValue: [false, false, false, false],
+                productSelected: title
+            })
+        }
+        else if (this.state.color.toString().includes(title)) {
+            console.log("Color exists ", title)
+            this.setState({
+                disabledValue: [false, false, false, false],
+                colorSelected: title
+            })
+        }
+        // else if (this.state.color.toString().includes(title) && this.state.colorSelected !== "Color") {
+        //     console.log("getInitialData for product")
+        //     this.getInitialData("product").then((response) => {
+        //         console.log("Response: ", response)
+        //         const product = response.data
+        //         console.log("product: ", product)
+        //         this.setState({
+        //             finalProduct: product
+        //         });
+        //         console.log("product in state: ", this.state.product)
+        //         this.setState(state => {
+        //             this.createDropdowns(this.state.colorSelected)
+        //             return {
+        //                 isOpen: !state.isOpen
+        //             }
+        //         });
+        //     })
+        // }
     }
 
     render() {
@@ -238,18 +410,18 @@ class SearchForm extends React.Component {
                                         Products
                                             </Form.Label>
                                 </Form.Row>
-                                <DropdownButton ref="product" disabled={this.state.disabledValue[2]} onClick={this.handleButtonClick.bind(this)} title="Product" size="lg" variant="info" id="dropdown-basic3">
-                                    {this.state.product}
+                                <DropdownButton ref="product" disabled={this.state.disabledValue[2]} onClick={this.handleButtonClick.bind(this)} title={this.state.productSelected} size="lg" variant="info" id="dropdown-basic3">
+                                    {this.state.productList}
                                 </DropdownButton>
                             </Col>
                             <Col sm={3}>
                                 <Form.Row>
                                     <Form.Label>
                                         Color
-                                            </Form.Label>
+                                    </Form.Label>
                                 </Form.Row>
-                                <DropdownButton disabled={this.state.disabledValue[3]} title="Color" size="lg" variant="primary" id="dropdown-basic4">
-                                    {/* This is where I dynamically create the list for products */}
+                                <DropdownButton disabled={this.state.disabledValue[3]} onClick={this.handleButtonClick.bind(this)} title={this.state.colorSelected} size="lg" variant="primary" id="dropdown-basic4">
+                                    {this.state.colorList}
                                 </DropdownButton>
                             </Col>
                         </ButtonToolbar>
@@ -260,21 +432,21 @@ class SearchForm extends React.Component {
                             <Container>
                                 <Form.Row>
                                     <Col>
-                                        <Image src={shirt} rounded />
+                                        <Image alt={""} src={this.state.image} width={300} height={300} rounded />
                                     </Col>
                                     <Col>
                                         <Form.Label>
-                                            Product Name
-                                    </Form.Label>
+                                            Product
+                                        </Form.Label>
                                         <Card type="text">
-                                            <Card.Body>Product Details</Card.Body>
+                                            <Card.Body>{this.state.finalProduct}</Card.Body>
                                         </Card>
                                         <p></p>
                                         <Form.Label>
                                             Price
                                     </Form.Label>
                                         <Card type="text">
-                                            <Card.Body>Price</Card.Body>
+                                            <Card.Body>{this.state.price}</Card.Body>
                                         </Card>
                                     </Col>
                                 </Form.Row>
