@@ -31,7 +31,7 @@ def get_product():
 @app.route('/products', methods=['POST'])
 def get_products():
     fields = request.json
-    print(request)
+    print(request.data)
     response = get_some_products(fields['category'], fields['subCategory'])
     return jsonify(response)
 
