@@ -22,31 +22,30 @@ def insert_product_api():
     return jsonify(request.json)
 
 
-@app.route('/product', methods=['GET'])
+@app.route('/product', methods=['POST'])
 def get_product():
     fields = request.json
     return jsonify(get_specific_product(fields['product'], fields['category'], fields['subCategory'], fields['color']))
 
 
-@app.route('/products', methods=['GET'])
+@app.route('/products', methods=['POST'])
 def get_products():
     fields = request.json
-    print(fields)
     return jsonify(get_some_products(fields['category'], fields['subCategory']))
 
 
-@app.route('/colors', methods=['GET'])
+@app.route('/colors', methods=['POST'])
 def get_colors():
     fields = request.json
     return jsonify(get_some_colors(fields['product'], fields['category'], fields['subCategory']))
 
 
-@app.route('/categories', methods=['GET'])
+@app.route('/categories', methods=['POST'])
 def get_categories():
     return jsonify(get_all_categories())
 
 
-@app.route('/subCategories', methods=['GET'])
+@app.route('/subCategories', methods=['POST'])
 def get_sub_categories():
     return jsonify(get_all_sub_categories())
 
