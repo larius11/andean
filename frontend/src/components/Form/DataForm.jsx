@@ -67,7 +67,7 @@ class DataForm extends React.Component {
             "details": this.state.details
         }
         this.state.formData = formData
-        this.getDataAxios(this.state.formData)
+        this.getDataAxios()
     }
 
     async getDataAxios() {
@@ -178,13 +178,3 @@ class DataForm extends React.Component {
 }
 
 export default DataForm
-
-{/* <div>
-<input required={true} type="file" name="file" onChange={(e) => this.onImageChange(e)}></input>
-<section>
-    <div id="fileDrag">
-        {/* <p>Drag 'n' drop some files here, or click to select files</p> */}
-//        <img src={this.state.file} alt="" width="250" height="250" max-width="100%" max-height="100%"></img>
-//    </div>
-//</section>
-//</div> */}
