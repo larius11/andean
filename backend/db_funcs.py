@@ -23,12 +23,30 @@ def insert_product(category, subCategory, color,
     return True, "Inserted a new Product."
 
 
+def get_specific_product(product, category, subCategory, color):
+    selectedSubCategory = SubCategory.query.with_entities(SubCategory.id).filter(SubCategory.name == subCategory).first()[0]
+    selectedCategory = Category.query.with_entities(Category.id).filter(Category.name == category, Category.sub_category == selectedSubCategory).first()[0]
+    return Product.query.with_entities(Product.details, Product.price, Product.image).filter(Product.category == selectedCategory, Product.name == product, Product.color == color).first()
+
+
 def get_all_categories():
-    return db.session.query(Category.name).all()
+    return Category.query.with_entities(Category.name).all()
 
 
 def get_all_sub_categories():
-    return db.session.query(SubCategory.name).all()
+    return SubCategory.query.with_entities(SubCategory.name).all()
+
+
+def get_some_products(category, subCategory):
+    selectedSubCategory = SubCategory.query.with_entities(SubCategory.id).filter(SubCategory.name == subCategory).first()[0]
+    selectedCategory = Category.query.with_entities(Category.id).filter(Category.name == category, Category.sub_category == selectedSubCategory).first()[0]
+    return Product.query.with_entities(Product.name).filter(Product.category == selectedCategory).all()
+
+
+def get_some_colors(product, category, subCategory):
+    selectedSubCategory = SubCategory.query.with_entities(SubCategory.id).filter(SubCategory.name == subCategory).first()[0]
+    selectedCategory = Category.query.with_entities(Category.id).filter(Category.name == category, Category.sub_category == selectedSubCategory).first()[0]
+    return Product.query.with_entities(Product.color).filter(Product.category == selectedCategory, Product.name == product).all()
 
 
 def get_all_products():

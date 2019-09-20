@@ -4,8 +4,6 @@ import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import styled from 'styled-components';
 import axios from 'axios'
-import DragAndDrop from './DragAndDrop'
-import Dropzone from "react-dropzone";
 
 const Styles = styled.div`
     .form-label{
@@ -69,7 +67,7 @@ class DataForm extends React.Component {
             "details": this.state.details
         }
         this.state.formData = formData
-        this.getDataAxios(this.state.formData)
+        this.getDataAxios()
     }
 
     async getDataAxios() {
@@ -180,13 +178,3 @@ class DataForm extends React.Component {
 }
 
 export default DataForm
-
-{/* <div>
-<input required={true} type="file" name="file" onChange={(e) => this.onImageChange(e)}></input>
-<section>
-    <div id="fileDrag">
-        {/* <p>Drag 'n' drop some files here, or click to select files</p> */}
-//        <img src={this.state.file} alt="" width="250" height="250" max-width="100%" max-height="100%"></img>
-//    </div>
-//</section>
-//</div> */}
