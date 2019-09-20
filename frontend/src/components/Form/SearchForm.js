@@ -93,7 +93,50 @@ class SearchForm extends React.Component {
                 });
             })
         }
-        else if (event.target.innerText === "Color") {
+        else if (this.state.category.toString().includes(innerText) && this.state.subCategorySelected !== "Sub-Category" && this.state.productSelected == "Product" && this.state.colorSelected == "Color"){
+            this.setState({
+                disabledValue: [false, true, true, true],
+                categorySelected: "Category",
+                subCategorySelected: "Sub-Category",
+                found: false
+            })
+        }
+        else if (this.state.subCategory.toString().includes(innerText) && this.state.productSelected !== "Product" && this.state.colorSelected !== "Color" ){ //if subCategory is reselected and color was chosen
+            console.log("Selected subCategory and should reset.")
+            this.setState({
+                disabledValue: [false, false, true, true],
+                subCategorySelected: "Sub-Category",
+                productSelected: "Product",
+                colorSelected: "Color",
+                finalProduct: "Product",
+                image: '',
+                price: '',
+                product: [],
+                color: [],
+                productList: [],
+                colorList: [],
+                found: false
+            })
+            
+        }
+        else if (this.state.subCategory.toString().includes(innerText) && this.state.productSelected !== "Product" && this.state.colorSelected == "Color" ){ //if subCategory is reselected but color was not
+            this.setState({
+                disabledValue: [false, false, true, true],
+                subCategorySelected: "Sub-Category",
+                productSelected: "Product",
+                colorSelected: "Color",
+                finalProduct: "Product",
+                image: '',
+                price: '',
+                product: [],
+                color: [],
+                productList: [],
+                colorList: [],
+                found: false
+            })
+        }
+
+        else if (event.target.innerText === "Color" ) {
             console.log("getInitialData for Color")
             this.getInitialData("colors").then((response) => {
                 console.log("Response: ", response)
@@ -114,6 +157,63 @@ class SearchForm extends React.Component {
                         isOpen: !state.isOpen
                     }
                 });
+            })
+        }
+        else if ((this.state.category.toString().includes(innerText) || this.state.subCategory.toString().includes(innerText)) && this.state.categorySelected !== "Category" && this.state.subCategorySelected !== "Sub-Category" && this.state.productSelected !== "Product" && this.state.colorSelected !== "Color"){ //check if category is not fresh selection and other fields have been selected
+            this.setState({
+                disabledValue: [false, true, true, true],
+                categorySelected: "Category",
+                subCategorySelected: "Sub-Category",
+                productSelected: "Product",
+                colorSelected: "Color",
+                finalProduct: "Product",
+                image: '',
+                price: '',
+                product: [],
+                color: [],
+                productList: [],
+                colorList: [],
+                found: false
+            })
+        }
+        else if (this.state.category.toString().includes(innerText) && this.state.subCategorySelected !== "Sub-Category" && this.state.productSelected !== "Product"){ //category is reselected and subcategory is selected and product is selected
+            this.setState({
+                disabledValue: [false, true, true, true],
+                categorySelected: "Category",
+                subCategorySelected: "Sub-Category",
+                productSelected: "Product",
+                colorSelected: "Color",
+                finalProduct: "Product",
+                image: '',
+                price: '',
+                product: [],
+                color: [],
+                productList: [],
+                colorList: [],
+                found: false
+            })
+        }
+        else if (this.state.product.toString().includes(innerText) && this.state.colorSelected !== "Color"){ //if product was reselected and color was selected
+            this.setState({
+                disabledValue: [false, false, false, true],
+                colorSelected: "Color",
+                color: [],
+                colorList: [],
+                finalProduct: "Product",
+                image: '',
+                price: '',
+                found: false
+            })
+        }
+        else if (this.state.color.toString().includes(innerText) && this.state.categorySelected !== "Category" && this.state.subCategorySelected !== "Sub-Category" && this.state.productSelected !== "Product" && this.state.finalProduct !== "Product"){
+                console.log("Should redisplay colors list")
+                this.setState({
+                disabledValue: [false, false, false, false],
+                colorSelected: "Color",
+                finalProduct: "Product",
+                image: '',
+                price: '',
+                found: false
             })
         }
         else {
@@ -420,9 +520,9 @@ class SearchForm extends React.Component {
                             </Container>
                         </Form.Row>
                         <p></p>
-                        <Button variant="primary" type="button" onClick={this.onSubmit}>
+                        {/* <Button variant="primary" type="button" onClick={this.onSubmit}>
                             Purchase
-                        </Button>
+                        </Button> */}
                     </Form>
                 </Styles>
             </div>
