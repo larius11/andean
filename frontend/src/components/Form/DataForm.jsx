@@ -73,7 +73,7 @@ class DataForm extends React.Component {
     async getDataAxios() {
         console.log("Sending this data: ", this.state.formData)
         const response = await axios.post(
-            'http://18.191.199.125:5000/insert',
+            'http://18.224.15.182:5000/insert',
             this.state.formData,
             { headers: { 'Content-Type': 'application/json' } }
 
