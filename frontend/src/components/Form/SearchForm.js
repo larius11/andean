@@ -44,8 +44,45 @@ class SearchForm extends React.Component {
         found: false
     };
 
+    async getInitialData(title) {
+        var formInfo = await this.getDataAxios(title)
+        if (title === "categories") {
+            this.setState({
+                category: formInfo
+            });
+        }
+        else if (title === "subCategories") {
+            this.setState({
+                subCategory: formInfo
+            });
+        }
+        else if (title === "products") {
+            const uniqueSet = new Array()
+            formInfo.forEach(element => {
+                if (!uniqueSet.includes(element[0])) {
+                    uniqueSet.push(element[0])
+                }
+            });
+            console.log("uniqueSet: ", uniqueSet)
+            this.setState({
+                product: uniqueSet
+            });
+            console.log("Products in state: ", this.state.product)
+        }
+        else if (title === "colors") {
+            this.setState({
+                color: formInfo
+            })
+        }
+        else if (title === "product") {
+            return formInfo
+        }
+        return formInfo
+    }
+
     constructor(props) {
         super(props);
+
         this.state = {
             id: '',
             price: '',
@@ -93,7 +130,7 @@ class SearchForm extends React.Component {
                 });
             })
         }
-        else if (this.state.category.toString().includes(innerText) && this.state.subCategorySelected !== "Sub-Category" && this.state.productSelected == "Product" && this.state.colorSelected == "Color"){
+        else if (this.state.category.toString().includes(innerText) && this.state.subCategorySelected !== "Sub-Category" && this.state.productSelected == "Product" && this.state.colorSelected == "Color") {
             this.setState({
                 disabledValue: [false, true, true, true],
                 categorySelected: "Category",
@@ -101,7 +138,7 @@ class SearchForm extends React.Component {
                 found: false
             })
         }
-        else if (this.state.subCategory.toString().includes(innerText) && this.state.productSelected !== "Product" && this.state.colorSelected !== "Color" ){ //if subCategory is reselected and color was chosen
+        else if (this.state.subCategory.toString().includes(innerText) && this.state.productSelected !== "Product" && this.state.colorSelected !== "Color") { //if subCategory is reselected and color was chosen
             console.log("Selected subCategory and should reset.")
             this.setState({
                 disabledValue: [false, false, true, true],
@@ -117,9 +154,9 @@ class SearchForm extends React.Component {
                 colorList: [],
                 found: false
             })
-            
+
         }
-        else if (this.state.subCategory.toString().includes(innerText) && this.state.productSelected !== "Product" && this.state.colorSelected == "Color" ){ //if subCategory is reselected but color was not
+        else if (this.state.subCategory.toString().includes(innerText) && this.state.productSelected !== "Product" && this.state.colorSelected == "Color") { //if subCategory is reselected but color was not
             this.setState({
                 disabledValue: [false, false, true, true],
                 subCategorySelected: "Sub-Category",
@@ -135,8 +172,7 @@ class SearchForm extends React.Component {
                 found: false
             })
         }
-
-        else if (event.target.innerText === "Color" ) {
+        else if (event.target.innerText === "Color") {
             console.log("getInitialData for Color")
             this.getInitialData("colors").then((response) => {
                 console.log("Response: ", response)
@@ -159,7 +195,7 @@ class SearchForm extends React.Component {
                 });
             })
         }
-        else if ((this.state.category.toString().includes(innerText) || this.state.subCategory.toString().includes(innerText)) && this.state.categorySelected !== "Category" && this.state.subCategorySelected !== "Sub-Category" && this.state.productSelected !== "Product" && this.state.colorSelected !== "Color"){ //check if category is not fresh selection and other fields have been selected
+        else if ((this.state.category.toString().includes(innerText) || this.state.subCategory.toString().includes(innerText)) && this.state.categorySelected !== "Category" && this.state.subCategorySelected !== "Sub-Category" && this.state.productSelected !== "Product" && this.state.colorSelected !== "Color") { //check if category is not fresh selection and other fields have been selected
             this.setState({
                 disabledValue: [false, true, true, true],
                 categorySelected: "Category",
@@ -176,7 +212,7 @@ class SearchForm extends React.Component {
                 found: false
             })
         }
-        else if (this.state.category.toString().includes(innerText) && this.state.subCategorySelected !== "Sub-Category" && this.state.productSelected !== "Product"){ //category is reselected and subcategory is selected and product is selected
+        else if (this.state.category.toString().includes(innerText) && this.state.subCategorySelected !== "Sub-Category" && this.state.productSelected !== "Product") { //category is reselected and subcategory is selected and product is selected
             this.setState({
                 disabledValue: [false, true, true, true],
                 categorySelected: "Category",
@@ -193,7 +229,7 @@ class SearchForm extends React.Component {
                 found: false
             })
         }
-        else if (this.state.product.toString().includes(innerText) && this.state.colorSelected !== "Color"){ //if product was reselected and color was selected
+        else if (this.state.product.toString().includes(innerText) && this.state.colorSelected !== "Color") { //if product was reselected and color was selected
             this.setState({
                 disabledValue: [false, false, false, true],
                 colorSelected: "Color",
@@ -205,9 +241,9 @@ class SearchForm extends React.Component {
                 found: false
             })
         }
-        else if (this.state.color.toString().includes(innerText) && this.state.categorySelected !== "Category" && this.state.subCategorySelected !== "Sub-Category" && this.state.productSelected !== "Product" && this.state.finalProduct !== "Product"){
-                console.log("Should redisplay colors list")
-                this.setState({
+        else if (this.state.color.toString().includes(innerText) && this.state.categorySelected !== "Category" && this.state.subCategorySelected !== "Sub-Category" && this.state.productSelected !== "Product" && this.state.finalProduct !== "Product") {
+            console.log("Should redisplay colors list")
+            this.setState({
                 disabledValue: [false, false, false, false],
                 colorSelected: "Color",
                 finalProduct: "Product",
@@ -232,7 +268,7 @@ class SearchForm extends React.Component {
             console.log("Component will NOT update")
             return false
         }
-        else if (this.state.colorSelected !== "Color"){
+        else if (this.state.colorSelected !== "Color") {
             return true
         }
         else {
@@ -241,9 +277,9 @@ class SearchForm extends React.Component {
         }
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         console.log("Inside componentDidUpdate and this.state.found= ", this.state.found)
-        if (this.state.colorSelected !== "Color" && this.state.categorySelected !== "Category" && this.state.subCategorySelected !== "Sub-Category" && this.state.productSelected !== "Product" && this.state.found === false){
+        if (this.state.colorSelected !== "Color" && this.state.categorySelected !== "Category" && this.state.subCategorySelected !== "Sub-Category" && this.state.productSelected !== "Product" && this.state.found === false) {
             console.log("Inside componentDidUpdate and getting final product")
             this.getInitialData("product").then((response) => {
                 console.log("Response: ", response)
@@ -251,14 +287,14 @@ class SearchForm extends React.Component {
                 console.log("Product Data: ", product)
                 this.setState({
                     finalProduct: product[0],
-                    price: product[1],
+                    price: parseFloat(product[1]).toFixed(2),
                     image: product[2],
                     found: true
                 })
                 return true
             })
         }
-        else{
+        else {
             return true
         }
     }
@@ -319,94 +355,10 @@ class SearchForm extends React.Component {
         }
     }
 
-    async getInitialData(title) {
-        var formInfo = await this.getDataAxios(title)
-        if (title === "categories") {
-            this.setState({
-                category: formInfo
-            });
-        }
-        else if (title === "subCategories") {
-            this.setState({
-                subCategory: formInfo
-            });
-        }
-        else if (title === "products") {
-            const uniqueSet = new Array()
-            formInfo.forEach(element => {
-                if (!uniqueSet.includes(element[0])) {
-                    uniqueSet.push(element[0])
-                }
-            });
-            console.log("uniqueSet: ", uniqueSet)
-            this.setState({
-                product: uniqueSet
-            });
-            console.log("Products in state: ", this.state.product)
-        }
-        else if (title === "colors") {
-            this.setState({
-                color: formInfo
-            })
-        }
-        else if (title === "product"){
-            return formInfo
-        }
-        return formInfo
-    }
 
-    createDropdowns(title) {
-        if (title === "Category") {
-            var testData = this.state.category
-            this.state.categoryList = testData.map(function (name) {
-                return <Dropdown.Item key={name}>{name}</Dropdown.Item>
-            })
-            return
-        }
-        else if (title === "Sub-Category") {
-            var testData = this.state.subCategory
-            this.state.subCategoryList = testData.map(function (name) {
-                return <Dropdown.Item key={name} value={name}>{name}</Dropdown.Item>
-            })
-            return
-        }
-        else if (title === "Product") {
-            var testData = this.state.product
-            console.log("testData: ", testData)
-            this.state.productList = testData.map(function (name) {
-                return <Dropdown.Item key={name} value={name}>{name}</Dropdown.Item>
-            })
-            return
-        }
-        else if (title === "Color") {
-            var testData = this.state.color
-            console.log("testData: ", testData)
-            this.state.colorList = testData.map(function (name) {
-                return <Dropdown.Item key={name}>{name}</Dropdown.Item>
-            })
-            return
-        }
-        else if (title === "Color" && this.state.colorSelected !== "Color") {
-            var testData = this.state.color
-            console.log("testData: ", testData)
-            this.state.colorList = testData.map(function (name) {
-                return <Dropdown.Item onSelect={console.log("Selected Color")} key={name}>{name}</Dropdown.Item>
-            })
-            return
-        }
-        else {
-            this.handleDropDownSelection(title)
-        }
-    }
-
-    handleSelect(e){
-        console.log("Selected: ", e.target)
-    }
 
     handleDropDownSelection(title) {
         console.log("Title: ", title)
-        console.log("Categories: ", this.state.category)
-        console.log("SubCategories: ", this.state.subCategory)
         if (this.state.category.toString().includes(title)) {
             this.setState({
                 disabledValue: [false, false, true, true],
@@ -436,6 +388,64 @@ class SearchForm extends React.Component {
         }
     }
 
+
+    handleSelect = (e, eventKey) => {
+        console.log("Selected: ", eventKey.target.innerText)
+        this.handleDropDownSelection(eventKey.target.innerText)
+    }
+
+    createDropdowns(title) {
+        if (title === "Category") {
+            var testData = this.state.category
+            this.state.categoryList = testData.map(function (name) {
+                return <Dropdown.Item eventKey={name} key={name}>{name}</Dropdown.Item>
+            })
+            return
+        }
+        else if (title === "Sub-Category") {
+            var testData = this.state.subCategory
+            this.state.subCategoryList = testData.map(function (name) {
+                return <Dropdown.Item eventKey={name} key={name} value={name}>{name}</Dropdown.Item>
+            })
+            return
+        }
+        else if (title === "Product") {
+            var testData = this.state.product
+            console.log("testData: ", testData)
+            this.state.productList = testData.map(function (name) {
+                return <Dropdown.Item eventKey={name} key={name} value={name}>{name}</Dropdown.Item>
+            })
+            return
+        }
+        else if (title === "Color") {
+            var testData = this.state.color
+            console.log("testData: ", testData)
+            this.state.colorList = testData.map(function (name) {
+                return <Dropdown.Item eventKey={name} key={name}>{name}</Dropdown.Item>
+            })
+            return
+        }
+        else if (title === "Color" && this.state.colorSelected !== "Color") {
+            var testData = this.state.color
+            console.log("testData: ", testData)
+            this.state.colorList = testData.map(function (name) {
+                return <Dropdown.Item eventKey={name} key={name}>{name}</Dropdown.Item>
+            })
+            return
+        }
+        // else {
+        //     this.handleDropDownSelection(title)
+        // }
+    }
+
+    convertPrice = (price) => {
+        if(parseFloat(price)){
+            this.setState({
+                price: price
+            })
+        }
+    }
+
     render() {
         return (
             <div className="container">
@@ -452,43 +462,45 @@ class SearchForm extends React.Component {
                     </Card>
                     <Form>
                         <ButtonToolbar>
-                            <Col sm={3}>
+                            <Col sm={5}>
                                 <Form.Row>
                                     <Form.Label>
                                         Categories
                                             </Form.Label>
                                 </Form.Row>
-                                <DropdownButton ref="category" disabled={false} required={true} onClick={this.handleButtonClick.bind(this)} title={this.state.categorySelected} size="lg" variant="primary" id="dropdown-basic1" name="category">
+                                <DropdownButton ref="category" disabled={false} required={true} onSelect={this.handleSelect.bind(this)} onClick={this.handleButtonClick.bind(this)} title={this.state.categorySelected} size="lg" variant="primary" id="dropdown-basic1" name="category">
                                     {this.state.categoryList}
                                 </DropdownButton>
                             </Col>
-                            <Col sm={3}>
+                            <Col sm={5}>
                                 <Form.Row>
                                     <Form.Label>
                                         Subcategories
-                                            </Form.Label>
+                                    </Form.Label>
                                 </Form.Row>
-                                <DropdownButton ref="subCategory" disabled={this.state.disabledValue[1]} onClick={this.handleButtonClick.bind(this)} title={this.state.subCategorySelected} size="lg" variant="secondary" id="dropdown-basic2">
+                                <DropdownButton ref="subCategory" disabled={this.state.disabledValue[1]} onSelect={this.handleSelect.bind(this)} onClick={this.handleButtonClick.bind(this)} title={this.state.subCategorySelected} size="lg" variant="secondary" id="dropdown-basic2">
                                     {this.state.subCategoryList}
                                 </DropdownButton>
                             </Col>
-                            <Col sm={3}>
+                        </ButtonToolbar>
+                        <ButtonToolbar>
+                            <Col sm={5}>
                                 <Form.Row>
                                     <Form.Label>
                                         Products
-                                            </Form.Label>
+                                    </Form.Label>
                                 </Form.Row>
-                                <DropdownButton ref="product" disabled={this.state.disabledValue[2]} onClick={this.handleButtonClick.bind(this)} title={this.state.productSelected} size="lg" variant="info" id="dropdown-basic3">
+                                <DropdownButton ref="product" disabled={this.state.disabledValue[2]} onSelect={this.handleSelect.bind(this)} onClick={this.handleButtonClick.bind(this)} title={this.state.productSelected} size="lg" variant="info" id="dropdown-basic3">
                                     {this.state.productList}
                                 </DropdownButton>
                             </Col>
-                            <Col sm={3}>
+                            <Col sm={5}>
                                 <Form.Row>
                                     <Form.Label>
                                         Color
                                     </Form.Label>
                                 </Form.Row>
-                                <DropdownButton disabled={this.state.disabledValue[3]} onClick={this.handleButtonClick.bind(this)} title={this.state.colorSelected} size="lg" variant="primary" id="dropdown-basic4">
+                                <DropdownButton disabled={this.state.disabledValue[3]} onSelect={this.handleSelect.bind(this)} onClick={this.handleButtonClick.bind(this)} title={this.state.colorSelected} size="lg" variant="primary" id="dropdown-basic4">
                                     {this.state.colorList}
                                 </DropdownButton>
                             </Col>
@@ -499,9 +511,6 @@ class SearchForm extends React.Component {
                             <Container>
                                 <Form.Row>
                                     <Col>
-                                        <Image alt={""} src={this.state.image} width={300} height={300} rounded />
-                                    </Col>
-                                    <Col>
                                         <Form.Label>
                                             Product
                                         </Form.Label>
@@ -511,10 +520,14 @@ class SearchForm extends React.Component {
                                         <p></p>
                                         <Form.Label>
                                             Price
-                                    </Form.Label>
+                                        </Form.Label>
                                         <Card type="text">
-                                            <Card.Body>{this.state.price}</Card.Body>
+                                            <Card.Body>${this.state.price}</Card.Body>
                                         </Card>
+                                        <p></p>
+                                    </Col>
+                                    <Col sm={5}>
+                                        <Image alt={""} src={this.state.image} fluid />
                                     </Col>
                                 </Form.Row>
                             </Container>
