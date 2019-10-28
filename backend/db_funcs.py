@@ -1,5 +1,5 @@
 from db_structure import db, SubCategory, Category, Product
-
+from images.download import download_picture
 
 def insert_product(category, subCategory, color,
                    name, price, details, image):
@@ -51,3 +51,22 @@ def get_some_colors(product, category, subCategory):
 
 def get_all_products():
     return Product.query.all()
+
+
+def get_images():
+    products = get_all_products()
+    id_index = 100
+    for product in products:
+        download_picture(product.images, id_index)
+        id_index = id_index + 1
+    return not(id_index > 999)
+
+
+def get_csv():
+    csv = 'ID,Type,Name,Published,"Is featured?","Visibility in catalog","Short description",Description,"Tax status","In stock?","Backorders allowed?","Sold individually?","Allow customer reviews?","Regular price",Categories,Images,Position\n'
+    products = get_all_products()
+    id_index = 100
+    for product in products:
+        newline = '' + id_index + ',single,"' + product.name + '",1,0,visible,"Short Description","' + product.details + '",taxable,1,0,1,1,' + product.price + ',"' + Category.query.with_entities(Category.name).filter(Category.id == product.category).frist()[0]+'",' + product.image + ',0\n'
+        csv = csv + newline
+    return csv
